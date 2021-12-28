@@ -11,8 +11,29 @@ class CardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: Image.network(post.imageUrl),
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Card(
+        elevation: 7,
+        child: Padding(
+          padding: const EdgeInsets.all(11.0),
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(post.title, style: TextStyle(fontSize: 20, ),),
+                Text(post.createdAt)
+                ],
+              ),
+              SizedBox(height: 20,),
+              Image.network(post.imageUrl),
+              SizedBox(height: 10,),
+              Text(post.description.substring(0,10))
+            ],
+          ),
+        ),
+      ),
     );
   }
 }
