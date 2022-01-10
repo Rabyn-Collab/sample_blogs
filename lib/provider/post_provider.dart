@@ -5,43 +5,70 @@ import 'package:sample_blog/model/posts.dart';
 
 
 
+final dataProvider = FutureProvider((ref) => DataProvider().getData());
 
-final postProvider = StateNotifierProvider<PostProvider, List<Posts>>((ref) => PostProvider());
+class DataProvider{
 
-class PostProvider  extends StateNotifier<List<Posts>>{
-  PostProvider() : super([]){
-    getData();
-  }
-
-
-
-Future<void> getData() async{
-    final dio = Dio();
-  try{
-
-    final posts = await dio.get(Api.posts);
-     List<Posts> newPosts = (posts.data as List).map((post) => Posts.fromJson(post)).toList();
-     state = newPosts;
-  }catch(err){
-      print(err);
-  }
-}
-
-  Future<void> addData() async{
-    final dio = Dio();
+  Future<List<Post>> getData() async{
     try{
-      final response = await dio.post(Api.posts, data: {
-      'createdAt': DateTime.now().toString(),
-        'imageUrl': 'https://media.istockphoto.com/photos/tokyo-cityscape-aerial-view-picture-id1278304139?b=1&k=20&m=1278304139&s=170667a&w=0&h=Zj3AqlA67R9saNsuJGXHuj6ROqSn0gc_mtiVbd5BBAo=',
-        'title': 'this is testing',
-        'description': 'it\s test 12'
-      });
-      print(response.statusCode);
-    }catch(err){
-      print(err);
+      final dio = Dio();
+    final  response = await dio.get(Api.getPosts);
+    List<Post> posts = (response.data as List).map((e) => Post.fromJson(e)).toList();
+    return posts;
+    }on DioError catch (e){
+      throw e;
     }
+
   }
 
+
+  Future<String> addData(Post newPost) async{
+    try{
+      final dio = Dio();
+       await dio.post(Api.getPosts,
+        data: {
+          "createdAt": newPost.createdAt,
+          "title": newPost.title,
+          "description": newPost.description,
+          "imageUrl": newPost.imageUrl
+      },);
+      return 'success';
+    } on DioError catch (e){
+      throw e;
+    }
+
+  }
+
+
+  Future<String> updateData(Post newPost, String id) async{
+    try{
+      final dio = Dio();
+      await dio.patch('https://61dbf86f591c3a0017e1a608.mockapi.io/blogs/$id',
+        data: {
+          "createdAt": newPost.createdAt,
+          "title": newPost.title,
+          "description": newPost.description,
+          "imageUrl": newPost.imageUrl
+        },);
+      return 'success';
+    } on DioError catch (e){
+      throw e;
+    }
+
+  }
+
+
+
+  Future<String> removeData(String id) async{
+    try{
+      final dio = Dio();
+       await dio.get('https://61dbf86f591c3a0017e1a608.mockapi.io/blogs/$id');
+       return 'success';
+    }on DioError catch (e){
+      throw e;
+    }
+
+  }
 
 
 }
