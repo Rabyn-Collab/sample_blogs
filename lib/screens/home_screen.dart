@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:get/get.dart';
 import 'package:sample_blog/provider/post_provider.dart';
+import 'package:sample_blog/screens/add_form.dart';
 
 
 
@@ -25,7 +27,13 @@ class HomeScreen extends StatelessWidget {
                 loading: () => Center(child: CircularProgressIndicator(),)
             );
           }
-        )
+        ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: (){
+         Get.to(() => AddForm(), transition: Transition.leftToRight);
+        },
+        child: Icon(Icons.add),
+      ),
     );
   }
 }

@@ -6,6 +6,7 @@ import 'package:sample_blog/model/posts.dart';
 
 
 final dataProvider = FutureProvider((ref) => DataProvider().getData());
+final postProvider = Provider((ref) => DataProvider());
 
 class DataProvider{
 
@@ -26,6 +27,11 @@ class DataProvider{
     try{
       final dio = Dio();
        await dio.post(Api.getPosts,
+        options: Options(
+          headers: <String, String>{
+            'Content-Type': 'application/json; charset=UTF-8',
+          },
+        ),
         data: {
           "createdAt": newPost.createdAt,
           "title": newPost.title,

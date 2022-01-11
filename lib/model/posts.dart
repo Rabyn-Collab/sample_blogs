@@ -1,12 +1,12 @@
 class Post {
   late String createdAt;
-  late String id;
+  late String? id;
   late String title;
   late String description;
   late String imageUrl;
 
   Post({
-    required this.id,
+     this.id,
     required this.imageUrl,
     required this.title,
     required this.description,
