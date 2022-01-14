@@ -23,7 +23,7 @@ class DataProvider{
   }
 
 
-  Future<String> addData(Post newPost) async{
+  Future<String> addData({Post? newPost}) async{
     try{
       final dio = Dio();
        await dio.post(Api.getPosts,
@@ -33,11 +33,11 @@ class DataProvider{
           },
         ),
         data: {
-          "createdAt": newPost.createdAt,
+          "createdAt": newPost!.createdAt,
           "title": newPost.title,
           "description": newPost.description,
           "imageUrl": newPost.imageUrl
-      },);
+      }, );
       return 'success';
     } on DioError catch (e){
       throw e;

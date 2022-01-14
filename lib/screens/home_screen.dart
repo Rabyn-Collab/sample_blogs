@@ -20,11 +20,40 @@ class HomeScreen extends StatelessWidget {
                   return ListView.builder(
                       itemCount: data.length,
                       itemBuilder: (context, index){
-                        return Text(data[index].title);
+                        return Container(
+                          margin: EdgeInsets.all(5),
+                          child: Card(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10)
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(15.0),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10)
+                                ),
+                                child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Text(data[index].title, style: TextStyle(fontSize: 20),)
+                                      ],
+                                    ),
+                                    SizedBox(height: 20,),
+                                    Image.network(data[index].imageUrl),
+                                    Text(data[index].description,  style: TextStyle(fontSize: 17))
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        );
                       });
                 },
                 error: (err, stack)=> Text('$err'),
-                loading: () => Center(child: CircularProgressIndicator(),)
+                loading: () => Center(child: CircularProgressIndicator(
+                  color: Colors.purple,
+                ),)
             );
           }
         ),

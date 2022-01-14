@@ -78,16 +78,24 @@ class AddForm extends StatelessWidget {
                     Consumer(
                       builder: (context, ref, child) {
                         return ElevatedButton(
-                            onPressed: () {
+                            onPressed: () async {
                               _form.currentState!.save();
                               if (_form.currentState!.validate()) {
+                                FocusScope.of(context).unfocus();
                                 final newPost = Post(
                                     imageUrl: imageController.text.trim(),
                                     title: titleController.text.trim(),
                                     description: descriptionController.text.trim(),
                                     createdAt: DateTime.now().toIso8601String()
                                 );
-                                ref.read(postProvider).addData(newPost);
+                        final response =  await ref.read(postProvider).addData(newPost: newPost);
+                            ref.refresh(dataProvider);
+
+                             if(response == 'success'){
+                               Navigator.of(context).pop();
+                             }else{
+                              print(response);
+                             }
                               }
                             },
                             child: Text('Submit'));
